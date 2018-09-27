@@ -25,7 +25,7 @@ In this experiment, two type of tools are compared. When people want to teach or
 
 **Object of study.** The object of study is persons without experience in programming. Their ability to learn software sciences and programming and their determination are objects of this experiment. 
 
-**Quality focus.** The main parameters studied in the experiment are the time to create and implement an application, the number of errors, and the code optimization through the number of lines of code (LOC). About the last criteria, lines of code are relevant to know in how many steps  
+**Quality focus.** The main parameters studied in the experiment are the time to create and implement an application, the number of errors, and the code optimization through the number of lines of code (LOC). About the last criteria, lines of code are relevant to know in how many steps a subject achieves its goals: less code it is less time spent to programming and more to thinking about the bes solution.   
 
 **Context.** The experiment is focused on the comparison between text editor and IDE to learn an object-oriented programming language. The experiment includes 40 persons who haven't skills in programming. They are volunteers to participate. That means all participants have palatability to programming and with this lack of randomization of subjects the experiment is not fully into control. Participants have followed the same course of object-oriented programming. Four environments (two text editors and two IDEs), all under Linux Ubuntu, were used during the experiment: Gedit, GNU Emacs, IntelliJ IDEA Community and Eclipse Oxygen for Java. In both categories we use two different tools to prevent variation from tool efficiency or inefficiency. Then they were divided into groups to learn the basis of each tool.  
 Of course, it is an off-line experiment, in that way the process of learning and evaluating subjects is under control. 
@@ -40,7 +40,7 @@ The experiment attempted to answer the following questions:
 3. Do IDE increase the quality of the solution submitted? This quality can be measure with the number of lines of code which provide hint about the code optimization. 
 
 ## Variables
-**Independent variables.** This experiment has two independent variables. The first one is the use of documentation for IDE features and, the second one is the use of documentation of Java.
+**Independent variables.** This experiment has two main independent variables. The use of an IDE or a text editor. The  use of documentation for IDE features and Java can be considered as external factors. 
 
 **Dependent variable.** The experiment has four dependent variables:
 
