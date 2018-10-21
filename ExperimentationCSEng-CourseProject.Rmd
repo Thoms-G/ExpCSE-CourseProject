@@ -88,7 +88,7 @@ At the end of the experiment, subjects will answer to a questionnaire about thei
 
 ### Task 1 
 The first one is a simple task. The subjects have to create naval battle game in command line. This version includes only one player who play against the computer. The computer shoots randomly to the enemy board. An example of the result expected (B = Boat, M = Missed, H = Hit)
-```{shell}
+```
 $> shoot(1,2)
 Missed! 
 Enemy missed!
@@ -155,5 +155,278 @@ Will be unacceptable :
  * illogical java class
  * non object-oriented programming 
 
-				
+# Analysis
 
+## Descriptive statistics
+We will present the results from the experiment described in the *Experimental Design*. Recall that we are testing three hypotheses:
+
+* The time (T) to develop the application
+* The correctness (C) of the solutions, i.e. number of errors per submissions
+* The code optimization in term of number of lines of codes (LOC) 
+
+
+```{r echo=FALSE}
+library(knitr)
+library(kableExtra)
+setwd("D:/Documents/5IF/Experimentation_CSEng/CourseProject")
+dataset <- read.csv("dataset.csv")
+
+TE        <- subset(dataset, Category=="TE")
+T1_TE     <- subset(TE, Task=='1')
+T2_TE     <- subset(TE, Task=='2')
+T3_TE     <- subset(TE, Task=='3')
+Gedit     <- subset(TE, Tool=='Gedit')
+T1_Gedit  <- subset(Gedit, Task=="1")
+T2_Gedit  <- subset(Gedit, Task=="2")
+T3_Gedit  <- subset(Gedit, Task=="3")
+Emacs     <- subset(TE, Tool=='Emacs')
+T1_Emacs  <- subset(Emacs, Task=="1")
+T2_Emacs  <- subset(Emacs, Task=="2")
+T3_Emacs  <- subset(Emacs, Task=="3")
+
+IDE       <- subset(dataset, Category=="IDE")
+T1_IDE    <- subset(IDE, Task=="1")
+T2_IDE    <- subset(IDE, Task=="2")
+T3_IDE    <- subset(IDE, Task=="3")
+Intelj    <- subset(IDE, Tool=='Intellij')
+T1_Intelj <- subset(Intelj, Task=="1")
+T2_Intelj <- subset(Intelj, Task=="2")
+T3_Intelj <- subset(Intelj, Task=="3")
+Eclipse   <- subset(IDE, Tool=='Eclipse')
+T1_Eclipse <- subset(Eclipse, Task=="1")
+T2_Eclipse <- subset(Eclipse, Task=="2")
+T3_Eclipse <- subset(Eclipse, Task=="3")
+
+```
+
+### Time
+Table 2 shows the descriptive analysis for the time which is expressed in minutes. We did an analysis for each task and across the tasks, respectively. For the time, we calculated the mean, the median, the standard deviation, the minimum, and maximum value for both two treatments.\
+In term of time, the TE group spent 12.2 percent on average more time in total. The mean is lower for the first and third tasks for the IDE group. For the second task,  the TE group spent, on average, less time than the IDE group. The maxima and the minima for the IDE group are always smaller than the ones of the TE group.\
+Figure 1 shows the time across all the tasks for each tool. 
+
+```{r echo=FALSE}
+T1_TE_mean    = mean(T1_TE$Time)
+T1_IDE_mean   = mean(T1_IDE$Time)
+T1_TE_median  = median(T1_TE$Time)
+T1_IDE_median = median(T1_IDE$Time)
+T1_TE_sd      = sd(T1_TE$Time)
+T1_IDE_sd     = sd(T1_IDE$Time)
+T1_TE_min     = min(T1_TE$Time)
+T1_IDE_min    = min(T1_IDE$Time)
+T1_TE_max     = max(T1_TE$Time)
+T1_IDE_max    = max(T1_IDE$Time)
+
+T2_TE_mean    = mean(T2_TE$Time)
+T2_IDE_mean   = mean(T2_IDE$Time)
+T2_TE_median  = median(T2_TE$Time)
+T2_IDE_median = median(T2_IDE$Time)
+T2_TE_sd      = sd(T2_TE$Time)
+T2_IDE_sd     = sd(T2_IDE$Time)
+T2_TE_min     = min(T2_TE$Time)
+T2_IDE_min    = min(T2_IDE$Time)
+T2_TE_max     = max(T2_TE$Time)
+T2_IDE_max    = max(T2_IDE$Time)
+
+T3_TE_mean    = mean(T3_TE$Time)
+T3_IDE_mean   = mean(T3_IDE$Time)
+T3_TE_median  = median(T3_TE$Time)
+T3_IDE_median = median(T3_IDE$Time)
+T3_TE_sd      = sd(T3_TE$Time)
+T3_IDE_sd     = sd(T3_IDE$Time)
+T3_TE_min     = min(T3_TE$Time)
+T3_IDE_min    = min(T3_IDE$Time)
+T3_TE_max     = max(T3_TE$Time)
+T3_IDE_max    = max(T3_IDE$Time)
+
+TE_mean    = mean(TE$Time)
+IDE_mean   = mean(IDE$Time)
+TE_median  = median(TE$Time)
+IDE_median = median(IDE$Time)
+TE_sd      = sd(TE$Time)
+IDE_sd     = sd(IDE$Time)
+TE_min     = min(TE$Time)
+IDE_min    = min(IDE$Time)
+TE_max     = max(TE$Time)
+IDE_max    = max(IDE$Time)
+
+line1 <- c(T1_TE_mean, T1_IDE_mean, T1_TE_median, T1_IDE_median, T1_TE_sd, T1_IDE_sd, T1_TE_min, T1_IDE_min, T1_TE_max, T1_IDE_max)
+line2 <- c(T2_TE_mean, T2_IDE_mean, T2_TE_median, T2_IDE_median, T2_TE_sd, T2_IDE_sd, T2_TE_min, T2_IDE_min, T2_TE_max, T2_IDE_max)
+line3 <- c(T3_TE_mean, T3_IDE_mean, T3_TE_median, T3_IDE_median, T3_TE_sd, T3_IDE_sd, T3_TE_min, T3_IDE_min, T3_TE_max, T3_IDE_max)
+line4 <- c(TE_mean, IDE_mean, TE_median, IDE_median, TE_sd, IDE_sd, TE_min, IDE_min, TE_max, IDE_max)
+
+
+reslutsframe <- data.frame(line1, line2, line3, line4)
+header <- c("TE", "IDE","TE", "IDE","TE", "IDE","TE", "IDE","TE", "IDE")
+names(reslutsframe) <- c("Task 1", "Task 2", "Task 3", "All")
+
+kable(t(reslutsframe), booktabs = T, caption = "Descriptive Statistics : Time", col.names = header, align = rep('c', 10)) %>%
+  kable_styling() %>%
+  row_spec(row = 0,align = "c") %>%
+  add_header_above(c(" "=1, "Mean" = 2, "Median" = 2, "Standard deviation" = 2, "Min" = 2, "Max" = 2))
+```
+
+```{r echo=FALSE}
+boxplot(Gedit$Time, Emacs$Time, Intelj$Time, Eclipse$Time,
+        names = c("Gedit", "Emacs", "Intelj", "Eclipse"),
+        ylab = "Time spent",
+        main = "Figure 1: Time spent for all the tasks")
+```
+### Correctness
+Table 3 shows the results for the correctness. On average, TE subjects make 2.19 errors more than the subjects of the IDE groups. The minimum and maximum value for the second task are quite similar between the two groups. However, the gap in the last task is bigger, with a maximum of 15 errors for the TE group against 10 errors for the IDE subjects.\
+Figure 2 is a boxplot of the errors made by the subjects of each tool. 
+
+```{r echo=FALSE}
+T1_TE_mean    = mean(T1_TE$Errors)
+T1_IDE_mean   = mean(T1_IDE$Errors)
+T1_TE_median  = median(T1_TE$Errors)
+T1_IDE_median = median(T1_IDE$Errors)
+T1_TE_sd      = sd(T1_TE$Errors)
+T1_IDE_sd     = sd(T1_IDE$Errors)
+T1_TE_min     = min(T1_TE$Errors)
+T1_IDE_min    = min(T1_IDE$Errors)
+T1_TE_max     = max(T1_TE$Errors)
+T1_IDE_max    = max(T1_IDE$Errors)
+
+T2_TE_mean    = mean(T2_TE$Errors)
+T2_IDE_mean   = mean(T2_IDE$Errors)
+T2_TE_median  = median(T2_TE$Errors)
+T2_IDE_median = median(T2_IDE$Errors)
+T2_TE_sd      = sd(T2_TE$Errors)
+T2_IDE_sd     = sd(T2_IDE$Errors)
+T2_TE_min     = min(T2_TE$Errors)
+T2_IDE_min    = min(T2_IDE$Errors)
+T2_TE_max     = max(T2_TE$Errors)
+T2_IDE_max    = max(T2_IDE$Errors)
+
+T3_TE_mean    = mean(T3_TE$Errors)
+T3_IDE_mean   = mean(T3_IDE$Errors)
+T3_TE_median  = median(T3_TE$Errors)
+T3_IDE_median = median(T3_IDE$Errors)
+T3_TE_sd      = sd(T3_TE$Errors)
+T3_IDE_sd     = sd(T3_IDE$Errors)
+T3_TE_min     = min(T3_TE$Errors)
+T3_IDE_min    = min(T3_IDE$Errors)
+T3_TE_max     = max(T3_TE$Errors)
+T3_IDE_max    = max(T3_IDE$Errors)
+
+TE_mean    = mean(TE$Errors)
+IDE_mean   = mean(IDE$Errors)
+TE_median  = median(TE$Errors)
+IDE_median = median(IDE$Errors)
+TE_sd      = sd(TE$Errors)
+IDE_sd     = sd(IDE$Errors)
+TE_min     = min(TE$Errors)
+IDE_min    = min(IDE$Errors)
+TE_max     = max(TE$Errors)
+IDE_max    = max(IDE$Errors)
+
+line1 <- c(T1_TE_mean, T1_IDE_mean, T1_TE_median, T1_IDE_median, T1_TE_sd, T1_IDE_sd, T1_TE_min, T1_IDE_min, T1_TE_max, T1_IDE_max)
+line2 <- c(T2_TE_mean, T2_IDE_mean, T2_TE_median, T2_IDE_median, T2_TE_sd, T2_IDE_sd, T2_TE_min, T2_IDE_min, T2_TE_max, T2_IDE_max)
+line3 <- c(T3_TE_mean, T3_IDE_mean, T3_TE_median, T3_IDE_median, T3_TE_sd, T3_IDE_sd, T3_TE_min, T3_IDE_min, T3_TE_max, T3_IDE_max)
+line4 <- c(TE_mean, IDE_mean, TE_median, IDE_median, TE_sd, IDE_sd, TE_min, IDE_min, TE_max, IDE_max)
+
+
+reslutsframe <- data.frame(line1, line2, line3, line4)
+header <- c("TE", "IDE","TE", "IDE","TE", "IDE","TE", "IDE","TE", "IDE")
+names(reslutsframe) <- c("Task 1", "Task 2", "Task 3", "All")
+
+kable(t(reslutsframe), booktabs = T, caption = "Descriptive Statistics : Errors", col.names = header, align = rep('c', 10)) %>%
+  kable_styling() %>%
+  row_spec(row = 0,align = "c") %>%
+  add_header_above(c(" "=1, "Mean" = 2, "Median" = 2, "Standard deviation" = 2, "Min" = 2, "Max" = 2))
+```
+```{r echo=FALSE}
+boxplot(Gedit$Errors, Emacs$Errors, Intelj$Errors, Eclipse$Errors,
+        names = c("Gedit", "Emacs", "Intelj", "Eclipse"),
+        ylab = "Errors",
+        main = "Figure 2: Errors for all the tasks")
+```
+
+### LOC
+Table 4 shows the results for the correctness. On average, TE subjects write 6.66  lines less than the subjects of the IDE groups. The minimum and maximum value can be very different for task 1 and 2.\
+Figure 3 to 5 shows the number of lines for each tool and for each task. The number of lines total is not relevant here, we will discuss it in *Interpretation*. 
+
+```{r echo=FALSE}
+T1_TE_mean    = mean(T1_TE$LOC)
+T1_IDE_mean   = mean(T1_IDE$LOC)
+T1_TE_median  = median(T1_TE$LOC)
+T1_IDE_median = median(T1_IDE$LOC)
+T1_TE_sd      = sd(T1_TE$LOC)
+T1_IDE_sd     = sd(T1_IDE$LOC)
+T1_TE_min     = min(T1_TE$LOC)
+T1_IDE_min    = min(T1_IDE$LOC)
+T1_TE_max     = max(T1_TE$LOC)
+T1_IDE_max    = max(T1_IDE$LOC)
+
+T2_TE_mean    = mean(T2_TE$LOC)
+T2_IDE_mean   = mean(T2_IDE$LOC)
+T2_TE_median  = median(T2_TE$LOC)
+T2_IDE_median = median(T2_IDE$LOC)
+T2_TE_sd      = sd(T2_TE$LOC)
+T2_IDE_sd     = sd(T2_IDE$LOC)
+T2_TE_min     = min(T2_TE$LOC)
+T2_IDE_min    = min(T2_IDE$LOC)
+T2_TE_max     = max(T2_TE$LOC)
+T2_IDE_max    = max(T2_IDE$LOC)
+
+T3_TE_mean    = mean(T3_TE$LOC)
+T3_IDE_mean   = mean(T3_IDE$LOC)
+T3_TE_median  = median(T3_TE$LOC)
+T3_IDE_median = median(T3_IDE$LOC)
+T3_TE_sd      = sd(T3_TE$LOC)
+T3_IDE_sd     = sd(T3_IDE$LOC)
+T3_TE_min     = min(T3_TE$LOC)
+T3_IDE_min    = min(T3_IDE$LOC)
+T3_TE_max     = max(T3_TE$LOC)
+T3_IDE_max    = max(T3_IDE$LOC)
+
+TE_mean    = mean(TE$LOC)
+IDE_mean   = mean(IDE$LOC)
+TE_median  = median(TE$LOC)
+IDE_median = median(IDE$LOC)
+TE_sd      = sd(TE$LOC)
+IDE_sd     = sd(IDE$LOC)
+TE_min     = min(TE$LOC)
+IDE_min    = min(IDE$LOC)
+TE_max     = max(TE$LOC)
+IDE_max    = max(IDE$LOC)
+
+line1 <- c(T1_TE_mean, T1_IDE_mean, T1_TE_median, T1_IDE_median, T1_TE_sd, T1_IDE_sd, T1_TE_min, T1_IDE_min, T1_TE_max, T1_IDE_max)
+line2 <- c(T2_TE_mean, T2_IDE_mean, T2_TE_median, T2_IDE_median, T2_TE_sd, T2_IDE_sd, T2_TE_min, T2_IDE_min, T2_TE_max, T2_IDE_max)
+line3 <- c(T3_TE_mean, T3_IDE_mean, T3_TE_median, T3_IDE_median, T3_TE_sd, T3_IDE_sd, T3_TE_min, T3_IDE_min, T3_TE_max, T3_IDE_max)
+line4 <- c(TE_mean, IDE_mean, TE_median, IDE_median, TE_sd, IDE_sd, TE_min, IDE_min, TE_max, IDE_max)
+
+
+reslutsframe <- data.frame(line1, line2, line3, line4)
+header <- c("TE", "IDE","TE", "IDE","TE", "IDE","TE", "IDE","TE", "IDE")
+names(reslutsframe) <- c("Task 1", "Task 2", "Task 3", "All")
+
+kable(t(reslutsframe), booktabs = T, caption = "Descriptive Statistics : LOC", col.names = header, align = rep('c', 10)) %>%
+  kable_styling() %>%
+  row_spec(row = 0,align = "c") %>%
+  add_header_above(c(" "=1, "Mean" = 2, "Median" = 2, "Standard deviation" = 2, "Min" = 2, "Max" = 2))
+```
+
+
+```{r echo=FALSE}
+boxplot(T1_Gedit$LOC, T1_Emacs$LOC, T1_Intelj$LOC, T1_Eclipse$LOC,
+        names = c("Gedit", "Emacs", "Intelj", "Eclipse"),
+        ylab = "LOC",
+        main = "Figure 3: LOC for task 1")
+```
+
+```{r echo=FALSE}
+boxplot(T2_Gedit$LOC, T2_Emacs$LOC, T2_Intelj$LOC, T2_Eclipse$LOC,
+        names = c("Gedit", "Emacs", "Intelj", "Eclipse"),
+        ylab = "LOC",
+        main = "Figure 4: LOC for task 2")
+```
+
+```{r echo=FALSE}
+boxplot(T3_Gedit$LOC, T3_Emacs$LOC, T3_Intelj$LOC, T3_Eclipse$LOC,
+        names = c("Gedit", "Emacs", "Intelj", "Eclipse"),
+        ylab = "LOC",
+        main = "Figure 5: LOC for task 3")
+```
+
+## Hypothesis testing
