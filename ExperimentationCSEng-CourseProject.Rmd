@@ -3,7 +3,8 @@ title: "Evaluation of the impact of using an IDE to learn an object-oriented pro
 author: "Thomas Gay - 74672"
 date: "September 28,2018"
 output:
-  pdf_document: default
+  pdf_document: 
+    number_sections: yes
   html_document:
     df_print: paged
     number_sections: true
@@ -58,7 +59,7 @@ With this experiment, the null hypothesis says that learn object-oriented progra
 |------------------------------------------------------	|------------------------	|-------------------------------	|
 | Time to implement application                       	| T(IDE)$\geq$T(TE)      	| T(IDE)$<$T(TE)                	|
 | Num of submissions of solution with a fault          	| C(IDE)$\geq$C(TE)      	| C(IDE)$<$C(TE)                	|
-| Num of line of code                                  	| LOC(IDE)$\geq$LOC(TE)  	| LOC(IDE)$<$LOC(TE)            	|
+| Num of lines of code                                  	| LOC(IDE)$\geq$LOC(TE)  	| LOC(IDE)$<$LOC(TE)            	|
 Table: Tested Hypotheses
 
 ## Subject
@@ -79,7 +80,7 @@ To summarize, the use of an IDE or a TE are the independent variables. The depen
 
 **Guidelines.** All the subjects will have the same theorical formation in Java. After, they will have a description of the features of their tools respectively. 
 
-**Measurement instruments.** In this experiment it is important to validate the subject's submission. That's way there is program which runs tests to be sure all the functional requirements are conformed to the specification. Another tool, called CLOC, will count the number of line in the program files.
+**Measurement instruments.** In this experiment it is important to validate the subject's submission. That's way there is program which runs tests to be sure all the functional requirements are conformed to the specification. Another tool, called CLOC, will count the number of lines in the program files.
 
 ## Data collection
 The experiment will begin with a three days of intensive Java courses. All the subjects will be together and learn in the same way. After, they will be divided into the groups and each group will have a two days training of the features of their tool. 
@@ -151,6 +152,7 @@ As it says before, after each submission the code will be analyse and test. If a
 
 Each subtask will be rated as *acceptable* or *unacceptable* according to the following criteria.
 Will be unacceptable : 
+
  * duplication of existing code
  * illogical java class
  * non object-oriented programming 
@@ -168,6 +170,9 @@ We will present the results from the experiment described in the *Experimental D
 ```{r echo=FALSE}
 library(knitr)
 library(kableExtra)
+library(survival)
+library(coin)
+knitr::opts_chunk$set(fig.width=12, fig.height=8)
 setwd("D:/Documents/5IF/Experimentation_CSEng/CourseProject")
 dataset <- read.csv("dataset.csv")
 
@@ -271,6 +276,7 @@ boxplot(Gedit$Time, Emacs$Time, Intelj$Time, Eclipse$Time,
         ylab = "Time spent",
         main = "Figure 1: Time spent for all the tasks")
 ```
+
 ### Correctness
 Table 3 shows the results for the correctness. On average, TE subjects make 2.19 errors more than the subjects of the IDE groups. The minimum and maximum value for the second task are quite similar between the two groups. However, the gap in the last task is bigger, with a maximum of 15 errors for the TE group against 10 errors for the IDE subjects.\
 Figure 2 is a boxplot of the errors made by the subjects of each tool. 
@@ -430,3 +436,112 @@ boxplot(T3_Gedit$LOC, T3_Emacs$LOC, T3_Intelj$LOC, T3_Eclipse$LOC,
 ```
 
 ## Hypothesis testing
+### Time to implement application - H~0~:T(IDE)$\geq$T(TE)
+For the time, we will test the hypothesis for all the tasks and for each task because of the difference between the TE group and the IDE one is changing from one task to another.We will use the t-test.\
+```{r echo=FALSE}
+test = t.test(IDE$Time, TE$Time, alternative = 'l')
+p = test$p.value
+t = test$statistic
+matrix(c(
+  c(p),
+  c(t)),
+  nrow = 2, ncol = 1, byrow = TRUE,
+  dimnames = list("All the task" = c("p-value","t-value")))
+```
+```{r echo=FALSE}
+test = t.test(T1_IDE$Time, T1_TE$Time, alternative = 'l')
+p = test$p.value
+t = test$statistic
+matrix(c(
+  c(p),
+  c(t)),
+  nrow = 2, ncol = 1, byrow = TRUE,
+  dimnames = list("Task 1" = c("p-value","t-value")))
+```
+
+```{r echo=FALSE}
+test = t.test(T2_IDE$Time, T2_TE$Time, alternative = 'l')
+p = test$p.value
+t = test$statistic
+matrix(c(
+  c(p),
+  c(t)),
+  nrow = 2, ncol = 1, byrow = TRUE,
+  dimnames = list("Task 2" = c("p-value","t-value")))
+```
+
+```{r echo=FALSE}
+test = t.test(T3_IDE$Time, T3_TE$Time, alternative = 'l')
+p = test$p.value
+t = test$statistic
+matrix(c(
+  c(p),
+  c(t)),
+  nrow = 2, ncol = 1, byrow = TRUE,
+  dimnames = list("Task 3" = c("p-value","t-value")))
+```
+
+### Number of submissions of solution with a fault - H~0~: C(IDE)$\geq$C(TE)
+To test the hypothesis of the correctness, we use a *Wilcox* test known as *Mann-Whitney* test. It is not necessary to test for each task because og the homogeneity of the results and the differences between the two groups.
+```{r echo=FALSE}
+test = wilcox.test(IDE$Errors, TE$Errors, alternative = 'l')
+p = test$p.value
+w = test$statistic
+
+matrix(c(
+  c(p),
+  c(w)),
+  nrow = 2, ncol = 1, byrow = TRUE,
+  dimnames = list("Correctness" = c("p-value","w-value")))
+```
+
+### Number of lines of code - H~0~: LOC(IDE)$\geq$LOC(TE) 
+For the number of lines of code, we are using the same approach than for the time. You can see below the results of these tests.
+```{r echo=FALSE}
+test = t.test(IDE$LOC, TE$LOC, alternative = 'l')
+p = test$p.value
+t = test$statistic
+matrix(c(
+  c(p),
+  c(t)),
+  nrow = 2, ncol = 1, byrow = TRUE,
+  dimnames = list("All the task" = c("p-value","t-value")))
+```
+```{r echo=FALSE}
+test = t.test(T1_IDE$LOC, T1_TE$LOC, alternative = 'l')
+p = test$p.value
+t = test$statistic
+matrix(c(
+  c(p),
+  c(t)),
+  nrow = 2, ncol = 1, byrow = TRUE,
+  dimnames = list("Task 1" = c("p-value","t-value")))
+```
+
+```{r echo=FALSE}
+test = t.test(T2_IDE$LOC, T2_TE$LOC, alternative = 'l')
+p = test$p.value
+t = test$statistic
+matrix(c(
+  c(p),
+  c(t)),
+  nrow = 2, ncol = 1, byrow = TRUE,
+  dimnames = list("Task 2" = c("p-value","t-value")))
+```
+
+```{r echo=FALSE}
+test = t.test(T3_IDE$LOC, T3_TE$LOC, alternative = 'l')
+p = test$p.value
+t = test$statistic
+matrix(c(
+  c(p),
+  c(t)),
+  nrow = 2, ncol = 1, byrow = TRUE,
+  dimnames = list("Task 3" = c("p-value","t-value")))
+```
+
+
+# Interpretation 
+## Evaluation of results
+
+## Limitations of study
